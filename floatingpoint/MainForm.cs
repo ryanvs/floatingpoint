@@ -12,85 +12,51 @@ namespace floatingpoint
     public partial class MainForm : Form
     {
         private bool _blockTextEvent;
+        private FloatInfo _floatInfo = new FloatInfo();
 
         public MainForm()
         {
             InitializeComponent();
         }
 
-        private void textBoxFloat_TextChanged(object sender, EventArgs e)
-        {
-            if (_blockTextEvent)
-                return;
-            try
-            {
-                _blockTextEvent = true;
-                float fValue = float.Parse(textBoxFloat.Text);
-                byte[] data = BitConverter.GetBytes(fValue);
-                int intValue = BitConverter.ToInt32(data, 0);
-                textBoxInt.Text = intValue.ToString();
-                textBoxHex.Text = "0x" + intValue.ToString("X8");
-            }
-            catch (Exception ex)
-            {
-                System.Diagnostics.Debug.WriteLine(ex.ToString());
-            }
-            finally
-            {
-                _blockTextEvent = false;
-            }
-        }
-
-        private void textBoxHex_TextChanged(object sender, EventArgs e)
-        {
-            if (_blockTextEvent)
-                return;
-            try
-            {
-                _blockTextEvent = true;
-                string sValue = textBoxHex.Text.StartsWith("0x", StringComparison.CurrentCultureIgnoreCase) ? textBoxHex.Text.Substring(2) : textBoxHex.Text;
-                int intValue = Int32.Parse(sValue, System.Globalization.NumberStyles.AllowHexSpecifier);
-                byte[] data = BitConverter.GetBytes(intValue);
-                float fValue = BitConverter.ToSingle(data, 0);
-                textBoxFloat.Text = fValue.ToString();
-                textBoxInt.Text = intValue.ToString();
-            }
-            catch (Exception ex)
-            {
-                System.Diagnostics.Debug.WriteLine(ex.ToString());
-            }
-            finally
-            {
-                _blockTextEvent = false;
-            }
-        }
-
-        private void textBoxInt_TextChanged(object sender, EventArgs e)
-        {
-            if (_blockTextEvent)
-                return;
-            try
-            {
-                _blockTextEvent = true;
-                int intValue = Int32.Parse(textBoxInt.Text);
-                byte[] data = BitConverter.GetBytes(intValue);
-                float fValue = BitConverter.ToSingle(data, 0);
-                textBoxFloat.Text = fValue.ToString();
-                textBoxHex.Text = "0x" + intValue.ToString("X8");
-            }
-            catch (Exception ex)
-            {
-                System.Diagnostics.Debug.WriteLine(ex.ToString());
-            }
-            finally
-            {
-                _blockTextEvent = false;
-            }
-        }
-
         private void MainForm_Load(object sender, EventArgs e)
         {
             textBoxFloat.Text = "1.0";
+        }
+
+        private void TextBox_TextChanged(object sender, EventArgs e)
+        {
+            if (_blockTextEvent)
+                return;
+            try
+            {
+                _blockTextEvent = true;
+                if (sender == textBoxInt)
+                    _floatInfo.ParseInt(textBoxInt.Text);
+                else if (sender == textBoxHex)
+                    _floatInfo.ParseHex(textBoxHex.Text);
+                else if (sender == textBoxFloat)
+                    _floatInfo.ParseFloat(textBoxFloat.Text);
+
+                if (sender != textBoxInt)
+                    textBoxInt.Text = _floatInfo.IntString;
+                if (sender != textBoxHex)
+                    textBoxHex.Text = _floatInfo.HexString;
+                if (sender != textBoxFloat)
+                    textBoxFloat.Text = _floatInfo.FloatString;
+
+                textBoxSign.Text = _floatInfo.Sign.ToString();
+                textBoxExponent.Text = _floatInfo.Exponent.ToString();
+                textBoxMantissa.Text = _floatInfo.Mantissa.ToString();
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine(ex.ToString());
+            }
+            finally
+            {
+                _blockTextEvent = false;
+            }
         }
     }
 }
