@@ -1,0 +1,68 @@
+﻿<Window x:Class="floatingpoint.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:local="clr-namespace:floatingpoint"
+        Title="MainWindow" Height="350" Width="525">
+    <Window.DataContext>
+        <local:FloatInfo/>
+    </Window.DataContext>
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        
+        <Label Content="Float Value" Grid.Column="0" Grid.Row="0"/>
+        <TextBox  Grid.Column="1" Grid.Row="0" Text="{Binding FloatString}"/>
+
+        <Label Content="Hex32 Value" Grid.Column="0" Grid.Row="1"/>
+        <TextBox  Grid.Column="1" Grid.Row="1" Text="{Binding HexString}"/>
+
+        <Label Content="Int32 Value" Grid.Column="0" Grid.Row="2"/>
+        <TextBox  Grid.Column="1" Grid.Row="2" Text="{Binding IntString}"/>
+
+        <local:FloatBitsControl Grid.ColumnSpan="2" Grid.Row="3"/>
+        
+        <StackPanel Grid.ColumnSpan="2" Grid.Row="4" Orientation="Horizontal">
+            <CheckBox IsChecked="{Binding Bits[31]}" />
+            <CheckBox IsChecked="{Binding Bits[30]}" />
+            <CheckBox IsChecked="{Binding Bits[29]}" />
+            <CheckBox IsChecked="{Binding Bits[28]}" />
+            <CheckBox IsChecked="{Binding Bits[27]}" />
+            <CheckBox IsChecked="{Binding Bits[26]}" />
+            <CheckBox IsChecked="{Binding Bits[25]}" />
+            <CheckBox IsChecked="{Binding Bits[24]}" />
+            <CheckBox IsChecked="{Binding Bits[23]}" />
+            <CheckBox IsChecked="{Binding Bits[22]}" />
+            <CheckBox IsChecked="{Binding Bits[21]}" />
+            <CheckBox IsChecked="{Binding Bits[20]}" />
+            <CheckBox IsChecked="{Binding Bits[19]}" />
+            <CheckBox IsChecked="{Binding Bits[18]}" />
+            <CheckBox IsChecked="{Binding Bits[17]}" />
+            <CheckBox IsChecked="{Binding Bits[16]}" />
+            <CheckBox IsChecked="{Binding Bits[15]}" />
+            <CheckBox IsChecked="{Binding Bits[14]}" />
+            <CheckBox IsChecked="{Binding Bits[13]}" />
+            <CheckBox IsChecked="{Binding Bits[12]}" />
+            <CheckBox IsChecked="{Binding Bits[11]}" />
+            <CheckBox IsChecked="{Binding Bits[10]}" />
+            <CheckBox IsChecked="{Binding Bits[9]}" />
+            <CheckBox IsChecked="{Binding Bits[8]}" />
+            <CheckBox IsChecked="{Binding Bits[7]}" />
+            <CheckBox IsChecked="{Binding Bits[6]}" />
+            <CheckBox IsChecked="{Binding Bits[5]}" />
+            <CheckBox IsChecked="{Binding Bits[4]}" />
+            <CheckBox IsChecked="{Binding Bits[3]}" />
+            <CheckBox IsChecked="{Binding Bits[2]}" />
+            <CheckBox IsChecked="{Binding Bits[1]}" />
+            <CheckBox IsChecked="{Binding Bits[0]}" />
+        </StackPanel>
+    </Grid>
+</Window>

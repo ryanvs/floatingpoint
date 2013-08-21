@@ -1,0 +1,57 @@
+﻿<UserControl
+    x:Class="floatingpoint.FloatBitsControl"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+    mc:Ignorable="d" 
+    d:DesignHeight="300" d:DesignWidth="300"
+>
+    <UserControl.Resources>
+        <Style x:Key="Sign" TargetType="TextBlock">
+            <Setter Property="Background" Value="#FFC5FBFF"/>
+        </Style>
+        <Style x:Key="Exponent" TargetType="TextBlock">
+            <Setter Property="Background" Value="#FF9FFFAB"/>
+        </Style>
+        <Style x:Key="Significand" TargetType="TextBlock">
+            <Setter Property="Background" Value="#FFFFADAD"/>
+        </Style>
+    </UserControl.Resources>
+    <Grid>
+        <StackPanel Orientation="Horizontal">
+            <TextBlock Text="{Binding Bits[31]}" Style="{StaticResource Sign}"></TextBlock>
+            <TextBlock Text="{Binding Bits[30]}" Style="{StaticResource Exponent}"></TextBlock>
+            <TextBlock Text="{Binding Bits[29]}" Style="{StaticResource Exponent}"></TextBlock>
+            <TextBlock Text="{Binding Bits[28]}" Style="{StaticResource Exponent}"></TextBlock>
+            <TextBlock Text="{Binding Bits[27]}" Style="{StaticResource Exponent}"></TextBlock>
+            <TextBlock Text="{Binding Bits[26]}" Style="{StaticResource Exponent}"></TextBlock>
+            <TextBlock Text="{Binding Bits[25]}" Style="{StaticResource Exponent}"></TextBlock>
+            <TextBlock Text="{Binding Bits[24]}" Style="{StaticResource Exponent}"></TextBlock>
+            <TextBlock Text="{Binding Bits[23]}" Style="{StaticResource Exponent}"></TextBlock>
+            <TextBlock Text="{Binding Bits[22]}" Style="{StaticResource Significand}"></TextBlock>
+            <TextBlock Text="{Binding Bits[21]}" Style="{StaticResource Significand}"></TextBlock>
+            <TextBlock Text="{Binding Bits[20]}" Style="{StaticResource Significand}"></TextBlock>
+            <TextBlock Text="{Binding Bits[19]}" Style="{StaticResource Significand}"></TextBlock>
+            <TextBlock Text="{Binding Bits[18]}" Style="{StaticResource Significand}"></TextBlock>
+            <TextBlock Text="{Binding Bits[17]}" Style="{StaticResource Significand}"></TextBlock>
+            <TextBlock Text="{Binding Bits[16]}" Style="{StaticResource Significand}"></TextBlock>
+            <TextBlock Text="{Binding Bits[15]}" Style="{StaticResource Significand}"></TextBlock>
+            <TextBlock Text="{Binding Bits[14]}" Style="{StaticResource Significand}"></TextBlock>
+            <TextBlock Text="{Binding Bits[13]}" Style="{StaticResource Significand}"></TextBlock>
+            <TextBlock Text="{Binding Bits[12]}" Style="{StaticResource Significand}"></TextBlock>
+            <TextBlock Text="{Binding Bits[11]}" Style="{StaticResource Significand}"></TextBlock>
+            <TextBlock Text="{Binding Bits[10]}" Style="{StaticResource Significand}"></TextBlock>
+            <TextBlock Text="{Binding Bits[9]}" Style="{StaticResource Significand}"></TextBlock>
+            <TextBlock Text="{Binding Bits[8]}" Style="{StaticResource Significand}"></TextBlock>
+            <TextBlock Text="{Binding Bits[7]}" Style="{StaticResource Significand}"></TextBlock>
+            <TextBlock Text="{Binding Bits[6]}" Style="{StaticResource Significand}"></TextBlock>
+            <TextBlock Text="{Binding Bits[5]}" Style="{StaticResource Significand}"></TextBlock>
+            <TextBlock Text="{Binding Bits[4]}" Style="{StaticResource Significand}"></TextBlock>
+            <TextBlock Text="{Binding Bits[3]}" Style="{StaticResource Significand}"></TextBlock>
+            <TextBlock Text="{Binding Bits[2]}" Style="{StaticResource Significand}"></TextBlock>
+            <TextBlock Text="{Binding Bits[1]}" Style="{StaticResource Significand}"></TextBlock>
+            <TextBlock Text="{Binding Bits[0]}" Style="{StaticResource Significand}"></TextBlock>
+        </StackPanel>
+    </Grid>
+</UserControl>

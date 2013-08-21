@@ -1,12 +1,8 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace floatingpoint
 {
-    public class FloatInfo
+    public class FloatInfo : PropertyChangedBase
     {
         public const int TotalBits = 32;
         public const int SignMask = Int32.MinValue; // 0x8000000
@@ -32,13 +28,22 @@ namespace floatingpoint
         private float _significandFraction;
 
         // Bit details
-        private BitArray _rawBits = new BitArray(TotalBits);
+        private readonly BitArray2 _rawBits;
 
         // String representations
         private string _hexString;
         private string _intString;
         private string _floatString;
 
+        // Constructor
+        public FloatInfo()
+        {
+            _rawBits = new BitArray2(TotalBits);
+            _rawBits.BitChanged += new EventHandler<BitChangedEventArgs>(SetRawBitHandler);
+            SetInt32(0, true);
+        }
+
+        // Properties
         public bool Sign
         {
             get { return _sign; }
@@ -49,6 +54,11 @@ namespace floatingpoint
         {
             get { return _exponent; }
             set { SetExponent(value); }
+        }
+
+        public int ExponentBiased
+        {
+            get { return _exponentBiased; }
         }
 
         public int Significand
@@ -117,16 +127,22 @@ namespace floatingpoint
             set { ParseFloat(value); }
         }
 
+        public BitArray2 Bits
+        {
+            get { return _rawBits; }
+        }
+
         public void ParseFloat(string floatValue)
         {
+            _floatString = floatValue;
             float fValue = float.Parse(floatValue);
-            SetFloat(fValue);
+            SetFloat(fValue, false);
         }
 
         public void ParseInt(string intString)
         {
             int intValue = Int32.Parse(intString);
-            SetInt32(intValue);
+            SetInt32(intValue, false);
         }
 
         public void ParseHex(string hexValue)
@@ -154,8 +170,14 @@ namespace floatingpoint
 
         public void SetFloat(float value)
         {
+            SetFloat(value, true);
+        }
+
+        public void SetFloat(float value, bool updateString)
+        {
             _floatValue = value;
             _data = BitConverter.GetBytes(value);
+            if (updateString) _floatString = _floatValue.ToString();
             _intValue = BitConverter.ToInt32(_data, 0);
             _intString = _intValue.ToString();
             _hexString = _intValue.ToString("X8");
@@ -164,10 +186,16 @@ namespace floatingpoint
 
         public void SetInt32(int value)
         {
+            SetInt32(value, true);
+        }
+
+        public void SetInt32(int value, bool updateString)
+        {
             _intValue = value;
             _data = BitConverter.GetBytes(value);
             _floatValue = BitConverter.ToSingle(_data, 0);
             _floatString = _floatValue.ToString();
+            if (updateString) _intString = _intValue.ToString();
             _hexString = _intValue.ToString("X8");
             ParseData();
         }
@@ -237,10 +265,15 @@ namespace floatingpoint
 
         public void SetRawBit(int index, bool value)
         {
+            SetRawBit(index, value, false);
+        }
+
+        public void SetRawBit(int index, bool value, bool refresh)
+        {
             if (index < 0 || index >= TotalBits)
                 throw new ArgumentException("'index' must be between 0 and " + TotalBits, "index");
 
-            if (_rawBits[index] != value)
+            if (refresh || _rawBits[index] != value)
             {
                 _rawBits[index] = value;
                 int newValue = _intValue;
@@ -251,8 +284,12 @@ namespace floatingpoint
                     newValue &= ~(0x1 << index);
 
                 SetInt32(newValue);
-                //ParseData();
             }
+        }
+
+        private void SetRawBitHandler(object sender, BitChangedEventArgs e)
+        {
+            SetRawBit(e.Bits[0], e.NewValues[0], true);
         }
 
         private void ParseData()
@@ -266,11 +303,11 @@ namespace floatingpoint
             _isSmallNumber = (_exponent == -127) && ((_significand & SignificandMask) != 0);
 
             // Load the bit array with values
-            _rawBits = new BitArray(TotalBits);
+            _rawBits.BitChanged -= new EventHandler<BitChangedEventArgs>(SetRawBitHandler);
             for (int index = 0; index < TotalBits; ++index)
             {
                 bool bitValue = (_intValue & (0x1 << index)) != 0;
-                _rawBits.Set(index, bitValue);
+                _rawBits[index] = bitValue;
             }
 
             // Check the BitArray
@@ -281,6 +318,8 @@ namespace floatingpoint
                 System.Diagnostics.Debug.Assert(bitValue == debugValue, string.Format("Bit mismatch on index {0}: GetRawBit={1}, Actual={2}", index, bitValue, debugValue));
                 System.Diagnostics.Debug.WriteLine("[{0:D2}]: {1}", index, bitValue);
             }
+            _rawBits.BitChanged += new EventHandler<BitChangedEventArgs>(SetRawBitHandler);
+            NotifyOfAllPropertiesChange();
         }
     }
 }

@@ -21,6 +21,8 @@ namespace floatingpoint
 
         private void MainForm_Load(object sender, EventArgs e)
         {
+            floatControl1.FloatValueChanged += new System.EventHandler(this.RefreshFloatInfo);
+            floatControl1.FloatValue = _floatInfo;
             textBoxFloat.Text = "1.0";
         }
 
@@ -28,9 +30,11 @@ namespace floatingpoint
         {
             if (_blockTextEvent)
                 return;
+
             try
             {
                 _blockTextEvent = true;
+
                 if (sender == textBoxInt)
                     _floatInfo.ParseInt(textBoxInt.Text);
                 else if (sender == textBoxHex)
@@ -47,7 +51,32 @@ namespace floatingpoint
 
                 textBoxSign.Text = _floatInfo.Sign.ToString();
                 textBoxExponent.Text = _floatInfo.Exponent.ToString();
-                textBoxMantissa.Text = _floatInfo.Mantissa.ToString();
+                textBoxMantissa.Text = _floatInfo.Significand.ToString();
+                floatControl1.RefreshFloatInfo();
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine(ex.ToString());
+            }
+            finally
+            {
+                _blockTextEvent = false;
+            }
+        }
+
+        public void RefreshFloatInfo(object sender, EventArgs e)
+        {
+            try
+            {
+                _blockTextEvent = true;
+
+                textBoxInt.Text = _floatInfo.IntString;
+                textBoxHex.Text = _floatInfo.HexString;
+                textBoxFloat.Text = _floatInfo.FloatString;
+
+                textBoxSign.Text = _floatInfo.Sign.ToString();
+                textBoxExponent.Text = _floatInfo.Exponent.ToString();
+                textBoxMantissa.Text = _floatInfo.Significand.ToString();
             }
             catch (Exception ex)
             {

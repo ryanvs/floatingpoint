@@ -46,6 +46,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BitArrayExtensions.cs" />
+    <Compile Include="FloatControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="FloatControl.Designer.cs">
+      <DependentUpon>FloatControl.cs</DependentUpon>
+    </Compile>
     <Compile Include="FloatInfo.cs" />
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>
@@ -55,6 +62,9 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="FloatControl.resx">
+      <DependentUpon>FloatControl.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
     </EmbeddedResource>
